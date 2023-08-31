@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './bloc.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -10,11 +11,17 @@ class MyHomePage extends StatefulWidget {
 class CryptoPrice {
   final String name;
   final double price;
-
   CryptoPrice({required this.name, required this.price});
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    final homeScreenBloc bloc = homeScreenBloc();
+    bloc.fetchCoinData();
+    super.initState();
+  }
+
   final List<CryptoPrice> cryptoPrices = [
     CryptoPrice(name: 'Bitcoin', price: 48000),
     CryptoPrice(name: 'Ethereum', price: 3200),
