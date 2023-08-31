@@ -39,9 +39,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView.builder(
         itemCount: cryptoPrices.length,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(cryptoPrices[index].name),
-            subtitle: Text('\$${cryptoPrices[index].price.toStringAsFixed(2)}'),
+          return Card(
+            child: ListTile(
+              leading: const Icon(Icons.warning_amber),
+              title: Text(cryptoPrices[index].name),
+              subtitle:
+                  Text('\$${cryptoPrices[index].price.toStringAsFixed(2)}'),
+            ),
           );
         },
       ),
