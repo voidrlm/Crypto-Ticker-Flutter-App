@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import './bloc.dart';
 
+class coinData {
+  final dynamic current_price;
+  final String name;
+  coinData(this.current_price, this.name);
+  factory coinData.fromJson(Map<String, dynamic> json) {
+    return coinData(json['current_price'], json['name']);
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
@@ -8,34 +17,23 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class CryptoPrice {
-  final String name;
-  final double price;
-  CryptoPrice({required this.name, required this.price});
-}
-
 class _MyHomePageState extends State<MyHomePage> {
+  List<dynamic> coins = [];
   @override
   void initState() {
-    final homeScreenBloc bloc = homeScreenBloc();
-    bloc.fetchCoinData();
+    refreshData();
     super.initState();
   }
 
-  Future<void> _refreshData() async {
-    // Simulate loading new data
-
+  Future<void> refreshData() async {
     final homeScreenBloc bloc = homeScreenBloc();
-    await bloc.fetchCoinData();
+    final data = await bloc.fetchCoinData();
+
+    setState(() {
+      coins = data.map((item) => coinData.fromJson(item)).toList();
+    });
   }
 
-  final List<CryptoPrice> cryptoPrices = [
-    CryptoPrice(name: 'Bitcoin', price: 48000),
-    CryptoPrice(name: 'Ethereum', price: 3200),
-    CryptoPrice(name: 'Cardano', price: 2.5),
-    CryptoPrice(name: 'Solana', price: 150),
-    CryptoPrice(name: 'Binance Coin', price: 400),
-  ];
   @override
   Widget build(BuildContext context) {
     final homeScreenBloc bloc = homeScreenBloc();
@@ -43,19 +41,24 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              bloc.fetchCoinData();
+            },
+          ),
+        ],
       ),
       body: RefreshIndicator(
-        onRefresh: _refreshData,
+        onRefresh: refreshData,
         child: ListView.builder(
-          itemCount: cryptoPrices.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: ListTile(
-                leading: const Icon(Icons.warning_amber),
-                title: Text(cryptoPrices[index].name),
-                subtitle:
-                    Text('\$${cryptoPrices[index].price.toStringAsFixed(2)}'),
-              ),
+          itemCount: coins.length,
+          itemBuilder: (context, index) {
+            final coinData object = coins[index];
+            return ListTile(
+              title: Text(object.name),
+              subtitle: Text('\$${object.current_price.toStringAsFixed(2)}'),
             );
           },
         ),
