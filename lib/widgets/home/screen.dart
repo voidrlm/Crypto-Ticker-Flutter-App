@@ -46,6 +46,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<dynamic> coins = [];
+  bool isLoading = false;
   @override
   void initState() {
     refreshData();
@@ -54,9 +55,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> refreshData() async {
     final homeScreenBloc bloc = homeScreenBloc();
+
+    setState(() {
+      isLoading = true;
+    });
     final data = await bloc.fetchCoinData();
     setState(() {
       coins = data.map((item) => coinData.fromJson(item)).toList();
+      isLoading = false;
     });
   }
 
@@ -67,17 +73,28 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              refreshData();
-            },
-          ),
+          isLoading
+              ? const Padding(
+                  padding:
+                      EdgeInsets.only(right: 16.0), // Add right padding here
+                  child: SizedBox(
+                      width: 18.0, // Adjust the width here
+                      height: 18.0, // Adjust the height here
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                        strokeWidth: 2.0,
+                      )))
+              : IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    refreshData();
+                  },
+                ),
         ],
       ),
       body: RefreshIndicator(
         onRefresh: refreshData,
-        child: coins.length == 0
+        child: coins.isEmpty
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
