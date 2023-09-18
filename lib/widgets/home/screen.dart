@@ -111,7 +111,17 @@ class _MyHomePageState extends State<MyHomePage> {
           // Customize the content of your bottom sheet here
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[],
+            children: <Widget>[
+              Image.network(
+                coin.image,
+                width: 48.0,
+                height: 48.0,
+              ),
+              Text(
+                coin.name,
+                style: TextStyle(fontSize: 24.0),
+              ),
+            ],
           ),
         );
       },
