@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import './bloc.dart';
 
 class coinData {
-  final double current_price;
+  final dynamic current_price;
   final String name;
-  coinData(this.current_price, this.name);
+  final String image;
+  coinData(this.current_price, this.name, this.image);
   factory coinData.fromJson(Map<String, dynamic> json) {
-    return coinData(json['current_price'], json['name']);
+    return coinData(json['current_price'], json['name'], json['image']);
   }
 }
 
@@ -28,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> refreshData() async {
     final homeScreenBloc bloc = homeScreenBloc();
     final data = await bloc.fetchCoinData();
+    print(data);
     setState(() {
       coins = data.map((item) => coinData.fromJson(item)).toList();
     });
@@ -44,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              bloc.fetchCoinData();
+              refreshData();
             },
           ),
         ],
@@ -56,6 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (context, index) {
             final coinData object = coins[index];
             return ListTile(
+              leading: Image.network(
+                object.image,
+                width: 48.0,
+                height: 48.0,
+              ),
               title: Text(object.name),
               subtitle: Text('\$${object.current_price.toStringAsFixed(2)}'),
             );
