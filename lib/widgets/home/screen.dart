@@ -121,6 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 coin.name,
                 style: TextStyle(fontSize: 24.0),
               ),
+              ListTile(
+                title: const Text('Current Price'),
+                subtitle: Text('\$${coin.current_price.toStringAsFixed(2)}'),
+              ),
             ],
           ),
         );
