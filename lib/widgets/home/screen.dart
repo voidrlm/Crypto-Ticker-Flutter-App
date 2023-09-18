@@ -77,36 +77,63 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: RefreshIndicator(
         onRefresh: refreshData,
-        child: ListView.builder(
-          itemCount: coins.length,
-          itemBuilder: (context, index) {
-            final coinData object = coins[index];
-            return ListTile(
-              leading: Image.network(
-                object.image,
-                width: 48.0,
-                height: 48.0,
+        child: coins.length == 0
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.error_outline,
+                      size: 100.0,
+                      color: Colors.red,
+                    ),
+                    const Text(
+                      'Something went wrong',
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                    const SizedBox(height: 20.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        refreshData();
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                itemCount: coins.length,
+                itemBuilder: (context, index) {
+                  final coinData object = coins[index];
+                  return ListTile(
+                    leading: Image.network(
+                      object.image,
+                      width: 48.0,
+                      height: 48.0,
+                    ),
+                    title: Text(object.name),
+                    subtitle:
+                        Text('\$${object.current_price.toStringAsFixed(2)}'),
+                    trailing: Text(
+                      '${object.price_change_percentage_24h.toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                          color: object.price_change_percentage_24h
+                                      .toStringAsFixed(2)[0] ==
+                                  '-'
+                              ? Colors.red
+                              : Colors.green),
+                    ),
+                    onTap: () {
+                      _showDetailedInformation(
+                          context,
+                          coins[
+                              index]); // Call the function to show the bottom sheet
+                    },
+                  );
+                },
               ),
-              title: Text(object.name),
-              subtitle: Text('\$${object.current_price.toStringAsFixed(2)}'),
-              trailing: Text(
-                '${object.price_change_percentage_24h.toStringAsFixed(2)}%',
-                style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
-                    color: object.price_change_percentage_24h
-                                .toStringAsFixed(2)[0] ==
-                            '-'
-                        ? Colors.red
-                        : Colors.green),
-              ),
-              onTap: () {
-                _showDetailedInformation(context,
-                    coins[index]); // Call the function to show the bottom sheet
-              },
-            );
-          },
-        ),
       ),
     );
   }
