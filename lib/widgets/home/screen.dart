@@ -90,6 +90,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               title: Text(object.name),
               subtitle: Text('\$${object.current_price.toStringAsFixed(2)}'),
+              trailing: Text(
+                '${object.price_change_percentage_24h.toStringAsFixed(2)}%',
+                style: TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold,
+                    color: object.price_change_percentage_24h
+                                .toStringAsFixed(2)[0] ==
+                            '-'
+                        ? Colors.red
+                        : Colors.green),
+              ),
               onTap: () {
                 _showDetailedInformation(context,
                     coins[index]); // Call the function to show the bottom sheet
@@ -107,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           // Customize the content of your bottom sheet here
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -119,11 +130,32 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 coin.name,
-                style: TextStyle(fontSize: 24.0),
+                style: const TextStyle(fontSize: 24.0),
               ),
-              ListTile(
-                title: const Text('Current Price'),
-                subtitle: Text('\$${coin.current_price.toStringAsFixed(2)}'),
+              Padding(
+                padding:
+                    const EdgeInsets.all(16.0), // Add your desired padding here
+                child: Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceAround, // Horizontal alignment
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('\$${coin.current_price.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                        )),
+                    Text(
+                      '${coin.price_change_percentage_24h.toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: coin.price_change_percentage_24h
+                                      .toStringAsFixed(2)[0] ==
+                                  '-'
+                              ? Colors.red
+                              : Colors.green),
+                    ),
+                  ],
+                ),
               ),
               ListTile(
                 title: const Text('Market Cap'),
@@ -140,10 +172,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ListTile(
                 title: const Text('Today Low'),
                 subtitle: Text('\$${coin.low_24h.toStringAsFixed(2)}'),
-              ),
-              ListTile(
-                title: Text(
-                    '${coin.price_change_percentage_24h.toStringAsFixed(2)}%'),
               ),
               ListTile(
                 title: const Text('24 Hour Price Change'),
