@@ -5,9 +5,18 @@ class coinData {
   final dynamic current_price;
   final String name;
   final String image;
-  coinData(this.current_price, this.name, this.image);
+
+  coinData(
+    this.current_price,
+    this.name,
+    this.image,
+  );
   factory coinData.fromJson(Map<String, dynamic> json) {
-    return coinData(json['current_price'], json['name'], json['image']);
+    return coinData(
+      json['current_price'],
+      json['name'],
+      json['image'],
+    );
   }
 }
 
@@ -37,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final homeScreenBloc bloc = homeScreenBloc();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -65,10 +73,31 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               title: Text(object.name),
               subtitle: Text('\$${object.current_price.toStringAsFixed(2)}'),
+              onTap: () {
+                _showDetailedInformation(context,
+                    coins[index]); // Call the function to show the bottom sheet
+              },
             );
           },
         ),
       ),
+    );
+  }
+
+  void _showDetailedInformation(BuildContext context, coin) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.all(16.0),
+          // Customize the content of your bottom sheet here
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[],
+          ),
+        );
+      },
     );
   }
 }
