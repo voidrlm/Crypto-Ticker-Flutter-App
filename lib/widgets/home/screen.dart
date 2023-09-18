@@ -55,7 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> refreshData() async {
     final homeScreenBloc bloc = homeScreenBloc();
     final data = await bloc.fetchCoinData();
-    print(data);
     setState(() {
       coins = data.map((item) => coinData.fromJson(item)).toList();
     });
@@ -157,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-                 ListTile(
+              ListTile(
                 title: const Text('24 Hour Price Change'),
                 subtitle: Text('\$${coin.price_change_24h.toStringAsFixed(2)}'),
               ),
@@ -177,8 +176,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: const Text('Total Volume'),
                 subtitle: Text('\$${coin.total_volume.toStringAsFixed(2)}'),
               ),
-     
-           
             ],
           ),
         );
