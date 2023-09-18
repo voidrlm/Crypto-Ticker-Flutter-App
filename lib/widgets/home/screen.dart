@@ -5,17 +5,34 @@ class coinData {
   final dynamic current_price;
   final String name;
   final String image;
+  final dynamic market_cap;
+  final dynamic total_volume;
+  final dynamic high_24h;
+  final dynamic low_24h;
+  final dynamic price_change_percentage_24h;
+  final dynamic price_change_24h;
 
   coinData(
-    this.current_price,
-    this.name,
-    this.image,
-  );
+      this.current_price,
+      this.name,
+      this.image,
+      this.market_cap,
+      this.total_volume,
+      this.high_24h,
+      this.low_24h,
+      this.price_change_percentage_24h,
+      this.price_change_24h);
   factory coinData.fromJson(Map<String, dynamic> json) {
     return coinData(
       json['current_price'],
       json['name'],
       json['image'],
+      json['market_cap'],
+      json['total_volume'],
+      json['high_24h'],
+      json['low_24h'],
+      json['price_change_percentage_24h'],
+      json['price_change_24h'],
     );
   }
 }
