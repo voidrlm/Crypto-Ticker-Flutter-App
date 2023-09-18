@@ -133,6 +133,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: const Text('Total Volume'),
                 subtitle: Text('\$${coin.total_volume.toStringAsFixed(2)}'),
               ),
+              ListTile(
+                title: const Text('Today High'),
+                subtitle: Text('\$${coin.high_24h.toStringAsFixed(2)}'),
+              ),
+              ListTile(
+                title: const Text('Today Low'),
+                subtitle: Text('\$${coin.low_24h.toStringAsFixed(2)}'),
+              ),
+              ListTile(
+                title: Text(
+                    '${coin.price_change_percentage_24h.toStringAsFixed(2)}%'),
+              ),
+              ListTile(
+                title: const Text('24 Hour Price Change'),
+                subtitle: Text('\$${coin.price_change_24h.toStringAsFixed(2)}'),
+              ),
             ],
           ),
         );
