@@ -129,6 +129,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: const Text('Market Cap'),
                 subtitle: Text('\$${coin.market_cap.toStringAsFixed(2)}'),
               ),
+              ListTile(
+                title: const Text('Total Volume'),
+                subtitle: Text('\$${coin.total_volume.toStringAsFixed(2)}'),
+              ),
             ],
           ),
         );
