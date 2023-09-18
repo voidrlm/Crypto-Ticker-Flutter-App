@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './bloc.dart';
 
 class coinData {
-  final dynamic current_price;
+  final double current_price;
   final String name;
   coinData(this.current_price, this.name);
   factory coinData.fromJson(Map<String, dynamic> json) {
@@ -28,7 +28,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> refreshData() async {
     final homeScreenBloc bloc = homeScreenBloc();
     final data = await bloc.fetchCoinData();
-
     setState(() {
       coins = data.map((item) => coinData.fromJson(item)).toList();
     });
